@@ -1,0 +1,150 @@
+/* ==========================================================================
+   LingoBloom — kids layer (playful gamification on top of the calm theme)
+   Loads AFTER style.css. Everything here is additive: remove this file and
+   the app still works, it just becomes less playful.
+   FIX: every colour is now a theme token, so dark mode stays readable.
+   ========================================================================== */
+
+:root{
+  --k-garden-1:#FBF9FF; --k-garden-2:#F2EFFE; --k-garden-line:#E4DAFB;
+  --k-badge-bg:#FFF8E7; --k-badge-line:#FDE9B8; --k-badge-ink:#8A5B00;
+  --k-chip-1:#FFF1F8; --k-chip-2:#EFE9FF; --k-chip-line:#EADCFB;
+  --k-locked-bg:#F4F2FA; --k-locked-line:#E7E3F3; --k-locked-ink:#9C99B4;
+  --k-petal-ink:#C2418A; --k-petal-line:#FBD9EA; --k-petal-bg:#FFF1F8;
+  --k-bar-track:#EDE9FE;
+}
+.dark{
+  --k-garden-1:#211E3D; --k-garden-2:#1A1735; --k-garden-line:#3A3466;
+  --k-badge-bg:#3A2F14; --k-badge-line:#5A4A22; --k-badge-ink:#FBD98A;
+  --k-chip-1:#3A2340; --k-chip-2:#2A2450; --k-chip-line:#4A3B72;
+  --k-locked-bg:#262245; --k-locked-line:#37315C; --k-locked-ink:#8E8AB0;
+  --k-petal-ink:#F0A6CE; --k-petal-line:#5A3450; --k-petal-bg:#3A2340;
+  --k-bar-track:#332C5C;
+}
+
+/* ---------- petals chip in the header ---------- */
+.petal-chip{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:linear-gradient(135deg,var(--k-chip-1),var(--k-chip-2));
+  border:2px solid var(--k-chip-line);color:var(--primary);font-weight:800;
+  border-radius:999px;padding:.4rem .75rem;cursor:pointer;
+  font-size:.85rem;line-height:1;min-height:38px;
+  transition:transform .16s ease, box-shadow .16s ease;
+}
+.petal-chip b{font-size:.95rem}
+.petal-chip:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+.petal-chip .mini-flower{width:18px;height:18px;flex:0 0 auto}
+
+/* ---------- home garden ---------- */
+.garden{margin-top:1.4rem;overflow:hidden;position:relative}
+.garden::after{
+  content:"";position:absolute;inset-inline-end:-40px;top:-40px;width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--pink) 20%,transparent),transparent 65%);pointer-events:none;
+}
+.garden-head{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+.garden-title{display:flex;align-items:center;gap:.6rem;font-weight:900;color:var(--ink)}
+.garden-title .ic-badge{background:linear-gradient(135deg,var(--k-chip-1),var(--k-chip-2))}
+.garden-plot{
+  margin-top:1rem;border-radius:22px;padding:1rem;
+  background:linear-gradient(180deg,var(--k-garden-1),var(--k-garden-2));
+  border:2px dashed var(--k-garden-line);position:relative;min-height:120px;
+}
+.garden-plot .empty{color:var(--muted);font-weight:700;text-align:center;padding:1.6rem .5rem}
+.blooms{display:flex;flex-wrap:wrap;gap:.5rem;align-items:flex-end}
+.bloom{width:44px;height:56px;transform-origin:50% 100%;animation:lbBloom .7s cubic-bezier(.2,1.4,.4,1) both}
+.bloom.small{width:34px;height:44px;opacity:.85}
+.bloom:hover{animation:lbWiggle .5s ease}
+.goal-ring{display:flex;align-items:center;gap:.7rem}
+.goal-ring .ring-wrap{position:relative;width:64px;height:64px}
+.goal-ring svg{transform:rotate(-90deg)}
+.goal-ring .ring-txt{
+  position:absolute;inset:0;display:grid;place-items:center;font-weight:900;color:var(--primary);font-size:.95rem
+}
+.badge-shelf{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.9rem}
+.badge-pill{
+  display:inline-flex;align-items:center;gap:.4rem;border-radius:999px;padding:.35rem .7rem;font-weight:800;font-size:.8rem;
+  background:var(--k-badge-bg);border:2px solid var(--k-badge-line);color:var(--k-badge-ink);
+}
+.badge-pill.locked{background:var(--k-locked-bg);border-color:var(--k-locked-line);color:var(--k-locked-ink);filter:grayscale(.4)}
+.badge-pill .ic{width:15px;height:15px}
+
+/* ---------- floating mascot ---------- */
+.kids-mascot{
+  position:fixed;inset-inline-start:1rem;bottom:5.6rem;z-index:55;
+  display:flex;align-items:flex-end;gap:.5rem;max-width:min(88vw,320px);
+}
+.kids-mascot .sprout{width:64px;height:64px;flex:0 0 auto;cursor:pointer;animation:lbFloat 3.6s ease-in-out infinite}
+.kids-mascot .sprout:hover{animation:lbWiggle .45s ease}
+.kids-bubble{
+  background:var(--card);border:2px solid var(--border);border-radius:18px 18px 18px 6px;
+  padding:.55rem .75rem;box-shadow:var(--shadow);font-weight:700;font-size:.82rem;color:var(--ink-soft);line-height:1.5;
+}
+html[dir=rtl] .kids-bubble{border-radius:18px 18px 6px 18px}
+.kids-bubble[hidden]{display:none}
+@media (max-width:860px){
+  .kids-mascot{bottom:6.4rem;inset-inline-start:.6rem;max-width:min(76vw,250px)}
+  .kids-mascot .sprout{width:52px;height:52px}
+}
+
+/* ---------- celebration overlay ---------- */
+.kids-celebrate{
+  position:fixed;inset:0;z-index:120;display:grid;place-items:center;
+  background:rgba(28,18,64,.5);backdrop-filter:blur(3px);padding:1.2rem;
+  animation:lbFade .25s ease both;
+}
+.kids-card{
+  background:var(--card);border-radius:30px;padding:1.6rem 1.4rem 1.3rem;max-width:380px;width:100%;text-align:center;
+  box-shadow:var(--shadow-lg);position:relative;animation:lbPop .45s cubic-bezier(.2,1.5,.4,1) both;
+  border:1px solid var(--border);
+}
+.kids-card h3{margin:.5rem 0 .2rem;font-size:1.28rem}
+.kids-card p{margin:.2rem 0 0;color:var(--ink-soft);font-weight:700}
+.kids-card .big-bloom{width:110px;height:120px;margin:0 auto;animation:lbBloom .9s cubic-bezier(.2,1.4,.4,1) both}
+.kids-card .petal-earn{
+  display:inline-flex;align-items:center;gap:.4rem;margin-top:.7rem;background:var(--k-petal-bg);border:2px solid var(--k-petal-line);
+  color:var(--k-petal-ink);font-weight:900;border-radius:999px;padding:.35rem .8rem;
+}
+.kids-card .btn-row{margin-top:1rem;justify-content:center}
+.kids-stars{display:flex;gap:.3rem;justify-content:center;margin-top:.4rem;color:var(--gold)}
+.kids-stars .ic{width:22px;height:22px}
+.kids-stars .off{color:var(--border)}
+
+/* ---------- playful "kids mode" skin ---------- */
+body.kids-mode .card{border-radius:28px}
+body.kids-mode .btn{border-radius:999px}
+body.kids-mode .btn:hover{transform:translateY(-2px)}
+body.kids-mode .lesson-card{border-style:dashed;border-width:2px}
+body.kids-mode .part-title::after{content:" ✿";color:var(--pink)}
+body.kids-mode .stat b{color:var(--primary)}
+body.kids-mode .lang-card:hover .lang-flag,body.kids-mode .lang-card:hover .flag{animation:lbWiggle .6s ease}
+body.kids-mode .vocab-row:hover{background:var(--primary-soft)}
+body.kids-mode .hero::after{
+  content:"✿ ❀ ✿";position:absolute;inset-inline-end:1.4rem;top:1rem;color:var(--pink);opacity:.5;letter-spacing:.4rem;pointer-events:none
+}
+/* adult / teen skin: calmer, no confetti-flavoured decoration */
+body.focus-mode .kids-mascot{display:none}
+body.focus-mode .hero::after{display:none}
+body.focus-mode .part-title::after{content:""}
+body.focus-mode .lesson-card{border-style:solid;border-width:1px}
+
+.kids-toggle{
+  border:2px solid var(--border);background:var(--card);color:var(--ink-soft);
+  border-radius:999px;padding:.35rem .65rem;font-weight:800;font-size:.78rem;cursor:pointer;
+  display:inline-flex;align-items:center;gap:.35rem;min-height:38px;
+}
+.kids-toggle.on{background:linear-gradient(135deg,var(--k-chip-1),var(--k-chip-2));border-color:var(--k-chip-line);color:var(--primary)}
+
+/* ---------- animations ---------- */
+@keyframes lbFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes lbWiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+@keyframes lbPop{0%{transform:scale(.82);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes lbBloom{0%{transform:scale(.2) translateY(14px) rotate(-12deg);opacity:0}60%{transform:scale(1.08) rotate(4deg);opacity:1}100%{transform:scale(1) rotate(0);opacity:1}}
+@keyframes lbFade{from{opacity:0}to{opacity:1}}
+@keyframes lbShine{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.sparkle-text{
+  background:linear-gradient(90deg,var(--primary),var(--pink),var(--blue),var(--primary));background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:lbShine 6s linear infinite
+}
+@media (prefers-reduced-motion:reduce){
+  .kids-mascot .sprout,.bloom,.kids-card,.kids-celebrate,.sparkle-text,.kids-card .big-bloom{animation:none!important}
+}

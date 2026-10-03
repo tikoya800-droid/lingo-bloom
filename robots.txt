@@ -1,0 +1,7 @@
+# LingoBloom
+User-agent: *
+Allow: /
+Disallow: /js/
+Disallow: /data/
+
+Sitemap: https://lingobloom.app/sitemap.xml
